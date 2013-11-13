@@ -18,11 +18,12 @@
 #
 
 if node.attribute?('ec2') && !FileTest.directory?(node['mysql']['ec2_path'])
-  service 'mysql' do
-    action :stop
+  execute 'configure mysql for ec2' do
+    command "echo configuring mysql for ec2"
+    notifies :stop, "service[mysql]", :immediately
   end
 
-  execute 'install-mysql' do
+  execute 'move-mysql-data' do
     command "mv #{node['mysql']['data_dir']} #{node['mysql']['ec2_path']}"
     not_if { FileTest.directory?(node['mysql']['ec2_path']) }
   end
@@ -39,9 +40,7 @@ if node.attribute?('ec2') && !FileTest.directory?(node['mysql']['ec2_path'])
     fstype  'none'
     options 'bind,rw'
     action  [:mount, :enable]
-  end
-
-  service 'mysql' do
-    action :start
+    notifies :restart, "service[mysql]", :immediately
   end
 end
+
