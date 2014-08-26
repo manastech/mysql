@@ -89,6 +89,9 @@ sort_buffer_size        = <%= node['mysql']['tunable']['sort_buffer_size'] %>
 read_buffer_size        = <%= node['mysql']['tunable']['read_buffer_size'] %>
 read_rnd_buffer_size    = <%= node['mysql']['tunable']['read_rnd_buffer_size'] %>
 join_buffer_size        = <%= node['mysql']['tunable']['join_buffer_size'] %>
+<%- if node['mysql']['tunable']['max-join-size'] %>
+max-join-size           = <%= node['mysql']['tunable']['max-join-size'] %>
+<%- end %>
 
 auto-increment-increment = <%= node['mysql']['auto-increment-increment'] %>
 auto-increment-offset    = <%= node['mysql']['auto-increment-offset'] %>
